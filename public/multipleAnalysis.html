@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html ng-app="blockchainAnalysis">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Resultados análisis</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/css/simple-sidebar.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+    <div id="wrapper" ng-controller="multipleAnalysisController">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a ng-href="/">
+                        Nueva búsqueda
+                    </a>
+                </li>
+                <li>
+                    <a ng-click="setBlocks()">Bloques analizados</a>
+                </li>
+                <li>
+                    <a ng-click="setPublicKeys()">Claves públicas obtenidas</a>
+                </li>
+                <li>
+                    <a ng-click="setTransactions()">Transacciones analizadas</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            
+    
+            <div class="container">
+                <!-- Portfolio Item Heading -->
+                <div class="row">
+                    <div class="col-lg-3">
+                        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Mostrar/Ocultar opciones</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12" ng-show="showBlocks">
+                        <h1 class="page-header">
+                            Bloques analizados
+                        </h1>
+                    </div>
+                    <div class="col-lg-12" ng-show="showPublicKeys">
+                        <h1 class="page-header">
+                            Claves públicas obtenidas
+                        </h1>
+                    </div>
+                    <div class="col-lg-12" ng-show="showTransactions">
+                        <h1 class="page-header">
+                            Transacciones analizadas
+                        </h1>
+                    </div>
+                </div>
+
+                <!-- Portfolio Item Row -->
+                <div class="row">
+                    <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table" ng-show="showBlocks">
+                            <thead class="thead-inverse">
+                                <tr>
+                                  <th class="text-center" class="col-md-5">Hash del bloque</th>
+                                  <th class="text-center">Fecha de minado</th>
+                                  <th class="text-center">Nº de transacciones</th>
+                                  <th class="text-center">Transacción analizada</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat='block in blocks | orderBy : orderByField : reverseSort'>
+                                    <td class="text-center">{{ block.hash }}</td>
+                                    <td class="text-center">{{ block.date }}</td>
+                                    <td class="text-center">{{ block.transactionsCount }}</td>
+                                    <td class="text-center">{{ block.transaction.hashTransaction }}</td>
+                                    <td align="center">
+                                </tr>
+                            </tbody>  
+                        </table>
+                        <table class="table" ng-show="showTransactions">
+                            <thead class="thead-inverse">
+                                <tr>
+                                  <th class="text-center">Hash de la transacción</th>
+                                  <th class="text-center">Hash del bloque</th>
+                                  <th class="text-center">Nº de inputs</th>
+                                  <th class="text-center">Nº de outputs</th>
+                                  <th class="text-center">Satoshis en el cambio</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat='transaction in transactions | orderBy : orderByField : reverseSort'>
+                                    <td class="text-center">{{ transaction.hashTransaction }}</td>
+                                    <td class="text-center">{{ transaction.hashBlock }}</td>
+                                    <td class="text-center">{{ transaction.inputCount }}</td>
+                                    <td class="text-center">{{ transaction.outputCount }}</td>
+                                    <td class="text-center">{{ transaction.output.valueSatoshis }}</td>
+                                    <td align="center">
+                                </tr>
+                            </tbody>  
+                        </table>
+                        <table class="table" ng-show="showPublicKeys">
+                            <thead class="thead-inverse">
+                                <tr>
+                                  <th class="text-center">Clave pública</th>
+                                  <th class="text-center">Hash de la transacción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat='key in keys | orderBy : orderByField : reverseSort'>
+                                    <td class="text-center">{{ key.publickey }}</td>
+                                    <td class="text-center">{{ key.transaction }}</td>
+                                    <td align="center">
+                                </tr>
+                            </tbody>  
+                        </table>
+                    </div>
+                    </div>
+                    
+                </div>
+                <!-- /.row -->
+
+                <hr>
+
+                <!-- Footer -->
+                <footer>
+                    <div class="row">
+                        <div class="col-lg-12">
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </footer>
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="/js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/js/bootstrap.min.js"></script>
+
+    <!-- D3 -->
+    <script src="/d3/d3.js"></script>
+    <script src="/d3/d3.min.js"></script>
+
+    <!-- Angular -->
+    <script src="/angular/angular.js"></script>
+    <script src="/angularRoute/angular-route.js"></script>
+    <script src="/ui-angular/ui-bootstrap.js"></script>
+    <script src="/ui-angular/ui-bootstrap-tpls.js"></script>
+
+    <!-- App -->
+    <script src="/public/blockchainAnalysis.js"></script>
+
+    <!-- Controllers -->
+    <script src="/public/multipleAnalysisController.js"></script>
+    <script src="/public/indexController.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+</body>
+
+</html>
